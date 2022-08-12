@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+    <head>
+        <meta charset="utf-8">
+        <title>Etch A Sketch</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div class="mainContainer">
+            <div class="left-side">
+                <div>
+                    <button class="gridsquares" onclick="entersquares()">Enter NOS</button>
+                    <button class="clearSketch" onclick="clearSketch()">Clear Board</button>
+                </div>
+                <div>
+                    <button class="earseSketch" id="white" onclick="colorSketch(this.id)">Eraser</button>
+                    <button class="blackink"  id="black"   onclick="colorSketch(this.id)">Black</button>
+                    <button class="rainbowColor" id="rainbow" onclick="colorSketch(this.id)">Rainbow</button>
+                </div>
+                <div>
+                    <p style="color:white;">Color Picker:</p>
+                    <input type="color" id="color" value="#000000">
+                </div>
+            </div>
+            <div class="container">
+
+            </div>
+        </div>
+        
+    </body>
+    <script>
+        let divsize = 0;
+        let nos = 0;
+        let parentContainer = document.querySelector('.container');
+       
+        let colorSlider = document.getElementById('color');
+        colorSlider.addEventListener('input', function(){
+            let colorVal = document.getElementById('color').value;
+            colorSketch(colorVal);
+        });
+        
+        entersquares();
+
+        function entersquares(){
+            nos = prompt("Enter number of squares -"); 
+            let confirmation = checknos();
+            if(confirmation)
+            {
+                divsize = 450/nos;
+                clearSketch();
+            }
+
+        }
+        
+        function checknos(){
+            if(nos>100){
+                nos = 0;
+                alert('Number of squares should be less than or equal to 100');
+                entersquares();
+            }
+            else return true;
+        }
+
+        
+        function clearSketch(){
+            let elementExists = document.querySelectorAll('.childcontainer');
+            let divLength = elementExists.length;
+            if(divLength>0){
+                for(let x=0;x<divLength;x++){
+                parentContainer.removeChild(elementExists[x]);
+            }
+                console.log('Cleared!');
+                sketching();
+            }
+            else {
+                sketching();
+            }
+        }
+
+        function sketching(){
+
+            for(let i=0;i<nos;i++){
+                for(let j=0;j<nos;j++){
+            let childdivs = document.createElement('div');
+            childdivs.classList.add('childcontainer');
+            childdivs.setAttribute('style',`height:${divsize}px; width:${divsize}px;`);
+            parentContainer.appendChild(childdivs);
+            }
+            }
+
+
+   
+        const childivelm = document.querySelectorAll('.childcontainer');
+        for(let k=0;k<childivelm.length;k++){
+            childivelm[k].addEventListener('mouseover', function changecolor(){
+                childivelm[k].setAttribute('style',`height:${divsize}px; width:${divsize}px; background-color: blue;`);
+            })
+        }
+        }
+
+        function colorSketch(btnid){
+            const childivelm = document.querySelectorAll('.childcontainer');
+
+            if(btnid === 'rainbow'){
+                for(let k=0;k<childivelm.length;k++){
+                    let color1 = Math.floor(Math.random() * 256);
+                    let color2 = Math.floor(Math.random() * 256);
+                    let color3 = Math.floor(Math.random() * 256);
+                    childivelm[k].addEventListener('mouseover', function changecolor(){
+                        childivelm[k].setAttribute('style',`height:${divsize}px; width:${divsize}px; background-color:rgb(${color1},${color2},${color3});`);
+                    })
+                }
+
+            }
+            else {
+                for(let k=0;k<childivelm.length;k++){
+                    childivelm[k].addEventListener('mouseover', function changecolor(){
+                        childivelm[k].setAttribute('style',`height:${divsize}px; width:${divsize}px; background-color:${btnid};`);
+                    })
+                }
+            }
+    }
+
+       
+
+
+
+    </script>
+</html>
